@@ -7,27 +7,42 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
-
 /**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ * Blog Javascript
+ * Copied from Clean Blog v1.0.0 (http://startbootstrap.com)
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+// Navigation Scripts to Show Header on Scroll-Up
+jQuery(document).ready(function ($) {
+    var MQL = 1170;
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+    //primary navigation slide-in effect
+    if ($(window).width() > MQL) {
+        var headerHeight = $('.navbar-custom').height();
+        $(window).on('scroll', {
+                previousTop: 0
+            },
+            function () {
+                var currentTop = $(window).scrollTop();
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+                //if user is scrolling up
+                if (currentTop < this.previousTop) {
+                    if (currentTop > 0 && $('.navbar-custom').hasClass('is-fixed')) {
+                        $('.navbar-custom').addClass('is-visible');
+                    } else {
+                        $('.navbar-custom').removeClass('is-visible is-fixed');
+                    }
+                    //if scrolling down...
+                } else {
+                    $('.navbar-custom').removeClass('is-visible');
+                    if (currentTop > headerHeight && !$('.navbar-custom').hasClass('is-fixed')) {
+                        $('.navbar-custom').addClass('is-fixed');
+                    }
+                }
+                this.previousTop = currentTop;
+            });
+    }
 
-const app = new Vue({
-    el: '#app'
+    // Initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
 });
