@@ -1,7 +1,7 @@
 <?php
 return [
-    'name' => "Laravel 博客",
-    'title' => "Laravel 博客",
+    'name' => " 博客",
+    'title' => " 博客",
     'subtitle' => 'http://laravelacademy.org',
     'description' => 'Laravel学院致力于提供优质Laravel中文学习资源',
     'author' => '学院君',

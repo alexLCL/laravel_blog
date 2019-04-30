@@ -14,6 +14,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">首页</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">登录</a>
+                </li>
             </ul>
         </div>
     </div>
