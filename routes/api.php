@@ -17,7 +17,8 @@ use Dingo\Api\Transformer\Adapter\Fractal;
 $api = app(\Dingo\Api\Routing\Router::class);
 
 $api->version('v1',function ($api){
-    $api->get('/tag/{id}',function ($id){
+
+    Route::get('/tag/{id}',function ($id){
         return \App\Models\Tag::findOrFail($id);
     })->name('tag.show');
 
