@@ -5,6 +5,7 @@ namespace App\Transformers;
 use App\Models\Tag;
 use App\User;
 use League\Fractal\TransformerAbstract;
+use Dingo\Api\Routing\Router;
 
 class TagTransformer extends TransformerAbstract
 {
