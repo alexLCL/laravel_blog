@@ -16,11 +16,18 @@ use Dingo\Api\Transformer\Adapter\Fractal;
 
 $api = app(\Dingo\Api\Routing\Router::class);
 
-$api->version('v1',function ($api){
+$api->version('v1', function ($api) {
 
-    Route::get('/tag/{id}',function ($id){
+    $api->get('/tag/{id}', function ($id) {
         return \App\Models\Tag::findOrFail($id);
-    })->name('tag.show');
+    })->name('tag.detail');
+
+    $api->get('/tag/{id}/url', function ($id) {
+        $url = app(\Dingo\Api\Routing\UrlGenerator::class)
+            ->version('v1')
+            ->route('tag.detail', ['id' => $id]);
+        return $url;
+    });
 
     $api->get('/fractal/resource/item', function () {
         $task = \App\Models\Tag::findOrFail(1);
@@ -33,8 +40,7 @@ $api->version('v1',function ($api){
         $tasks = \App\Models\Tag::all();
         $resource = new \League\Fractal\Resource\Collection($tasks, new \App\Transformers\TagTransformer());
         $fractal = new \League\Fractal\Manager();
-        $fractal->setSerializer(new \League\Fractal\Serializer\JsonApiSerializer ());
-        return $fractal->createData($resource)->toJson();
+        return $fractal->parseIncludes('user')->createData($resource)->toJson();
     });
 
     $api->get('/fractal/serializers', function () {
@@ -48,6 +54,17 @@ $api->version('v1',function ($api){
         });
         $fractal = new \League\Fractal\Manager();
         $fractal->setSerializer(new \League\Fractal\Serializer\JsonApiSerializer());
+        return $fractal->createData($resource)->toJson();
+    });
+
+    Route::get('fractal/paginator', function () {
+        $paginator = \App\Models\Tag::paginate();
+        $tasks = $paginator->getCollection();
+
+        $resource = new \League\Fractal\Resource\Collection($tasks, new \App\Transformers\TaskTransformer());
+        $resource->setPaginator(new \League\Fractal\Pagination\IlluminatePaginatorAdapter($paginator));
+
+        $fractal = new \League\Fractal\Manager();
         return $fractal->createData($resource)->toJson();
     });
 });
